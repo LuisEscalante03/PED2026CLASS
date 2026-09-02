@@ -2,13 +2,13 @@
 
 //Sobrecarga
 //Paso de valor (copia)
-int Incrementar(int x);
+int IncrementarValor(int x);
 
 //Paso de referencia
-//int Incrementar(int &x);
+int IncrementarReferencia(int &x);
 
 //Paso de puntero
-//int Incrementar(int *ptr_x);
+int IncrementarPuntero(int *ptr_x);
 
 int main() {
 
@@ -25,23 +25,47 @@ int main() {
     std::cout << "Detalle de valor: " << valor << "\n"; //200 por que se modifico desde el puntero
     std::cout << "Dir. de memoria de valor: " << ptr << "\n"; // Dirección de memoria de valor
     std::cout << "Dir. de memoria de ptr: " << &ptr << "\n"; // Dirección de memoria de ptr
+    std::cout << "\n";
 
     //Prueba de funcion incremento con paso de valor
-    std::cout << "Paso por valor(copia): " << Incrementar(valor) << "\n";
+    std::cout << "\n";
+    std::cout << "Funcion incremento con paso de valor: " << "\n";
+    std::cout << "Paso por valor(copia): " << IncrementarValor(valor) << "\n";
     std::cout << "Detalle de valor: " << valor << "\n";
-    
+    std::cout << "Detalle del valor desde el ptr: " << *ptr << "\n"; 
+
+    //Prueba de funcion incremento con referencia
+    std::cout << "\n";
+    std::cout << "Funcion incremento con paso de referencia: " << "\n"; 
+    std::cout << "Paso por referencia: " << IncrementarReferencia(valor) << "\n";
+    std::cout << "Detalle de valor: " << valor << "\n";
+    std::cout << "Detalle del valor desde el ptr: " << *ptr << "\n";
+
+    //Prueba de funcion incremento con puntero
+    std::cout << "\n";
+    std::cout << "Funcion incremento con paso de puntero: " << "\n";
+    std::cout << "Paso por puntero: " << IncrementarPuntero(ptr) << "\n";
+    std::cout << "Paso por puntero con &valor: " << IncrementarPuntero(&valor) << "\n";
+    std::cout << "Detalle de valor: " << valor << "\n";
+    std::cout << "Detalle del valor desde el ptr: " << *ptr << "\n";
 
     return 0;
 }
 
 //Paso de valor (copia)
-int Incrementar(int x) {
+int IncrementarValor(int x) {
     x+=10;
     return x;
 }
 
 //Paso de referencia
-//int Incrementar(int &x) {
-//    x+=10;
-//    return x;
-//}
+int IncrementarReferencia(int &x) {
+   x+=10;
+   return x;
+}
+
+//Paso de puntero
+int IncrementarPuntero(int *ptr_x) {
+   *ptr_x += 10;
+   return *ptr_x;
+}
