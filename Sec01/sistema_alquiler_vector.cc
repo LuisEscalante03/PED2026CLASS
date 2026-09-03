@@ -1,16 +1,21 @@
 #include <iostream>
-#include <string>
-#include <cstdlib>
 #include <random>
+
+// Desde C++20 activa funcionalidades de calendario
+#include <chrono>
+
+// Lib de arreglo de tamaño variable
 #include <vector>
+#include <utility>
+#include <string>
 
 // Declaracion de Struct
 struct DatosAlquiler
 {
-    float horas_alquiler[3];
-    float costo_alquiler;
-    int cod_alquiler;
-    const float KPrecioHora = 3.0;
+    const double kPrecioHora = 3;
+    double costo_total;
+    int codigo;
+    std::vector<std::pair<std::string, float>> dias_horas;
 };
 
 struct Cliente
@@ -18,34 +23,38 @@ struct Cliente
     std::string nombre_completo;
 
     // Variable que anida
-    struct DatosAlquiler datos_alquiler;
+    DatosAlquiler datos_alquiler;
+};
 
-} cliente;
+// Variable global
+Cliente cliente;
 
-//Declaracion de vector
-std::vector<Cliente> vector_cliente;
+// Variable vector
+std::vector<Cliente> vector_clientes;
 
 // Declaracion de funciones
 void SolicitarDatos();
-float CalcularCostoAlquiler(float cant_horas[], float precio_hora);
+float CalcularCostoAlquiler(std::vector<std::pair<std::string, float>> dias_horas, float precio_hora);
 int GenerarCodigoAlquiler();
 void DeterminarDescuento(int cod_alquiler);
 void Imprimir();
-int CalcularLongitudArreglo();
 
 int main()
 {
-    std::cout << "Tamano en bytes de struct Cliente: " << sizeof(cliente) << "\n";
+    std::cout << "Tamano en bytes de struct cliente: " << sizeof(cliente) << "\n";
 
     SolicitarDatos();
 
-    cliente.datos_alquiler.costo_alquiler =
-        CalcularCostoAlquiler(cliente.datos_alquiler.horas_alquiler, cliente.datos_alquiler.KPrecioHora);
-    cliente.datos_alquiler.cod_alquiler = GenerarCodigoAlquiler();
+    cliente.datos_alquiler.costo_total =
+        CalcularCostoAlquiler(cliente.datos_alquiler.dias_horas, cliente.datos_alquiler.kPrecioHora);
 
-    //Almacenando en el vector
-    vector_cliente.push_back(cliente);
+    // Generar codigo
+    cliente.datos_alquiler.codigo = GenerarCodigoAlquiler();
 
+    // Agregar cliente al vector
+    vector_clientes.push_back(cliente);
+
+    // Imprimir datos
     Imprimir();
 
     return 0;
@@ -53,81 +62,78 @@ int main()
 
 void SolicitarDatos()
 {
-        std::cout << "Ingresa el nombre: ";
-        std::getline(std::cin, cliente.nombre_completo);
+    std::string dias;
+    float cant_horas;
 
-        for (int j = 0; j < CalcularLongitudArreglo(); j++)
-        {
-            std::cout << "Ingresar horas de alquiler: ";
-            std::cin >> cliente.datos_alquiler.horas_alquiler[j];
-        }
+    std::cout << "Ingresa el nombre: ";
+    std::cin >> cliente.nombre_completo;
+    std::cout << "Detalles para el alquiler: \n";
+    std::cout << "Ingresar el dia (Miercoles): ";
+    std::cin >> dias;
+    std::cout << "Ingresar horas de alquiler para ese dia: ";
+    std::cin >> cant_horas;
+
+    // Guardar dia y horas de alquiler en el vector-pair
+    cliente.datos_alquiler.dias_horas.push_back({dias, cant_horas});
 }
 
-float CalcularCostoAlquiler(float cant_horas[], float precio_hora)
+float CalcularCostoAlquiler(std::vector<std::pair<std::string, float>> dias_horas, float precio_hora)
 {
-    float total_horas_alquiler = 0;
-    for (int i = 0; i < CalcularLongitudArreglo(); i++)
-    {
-        total_horas_alquiler += cant_horas[i];
-    }
+    // Calcular el costo total
+    float total_horas = 0;
 
-    return total_horas_alquiler * precio_hora;
+    for (int i = 0; i < cliente.datos_alquiler.dias_horas.size(); i++)
+    {
+        total_horas += cliente.datos_alquiler.dias_horas[i].second;
+    }
+    return total_horas * precio_hora;
 }
 
 int GenerarCodigoAlquiler()
 {
-    return rand() % 9999 + 1000;
+    std::random_device rd;
+    std::mt19937 gen(rd());
 
-    // std::random_device rd;
-    // std::mt19937 gen(rd());
-    // std::uniform_int_distribution<int> dist(1000, 9999);
-    // return dist(gen);
+    std::uniform_int_distribution<int> dist(1000, 9999);
+
+    return dist(gen);
 }
 
 void DeterminarDescuento(int cod_alquiler)
 {
-    /*  if (cod_alquiler % 2 == 0)
-      {
-          std::cout<<"Descuento del 10%";
-      }else{
-          std::cout<<"No tiene descuento";
-      }
-          */
-    // Implementacion del operador ternario
-    (cod_alquiler % 2 == 0) ? std::cout << "Descuento del 10% \n" : std::cout << "No tiene descuento \n";
+    (cod_alquiler % 2 == 0) ? std::cout << "Descuento del 10%\n" : std::cout << "No tiene descuento\n";
 }
 
 void Imprimir()
 {
     std::cout << "\n";
-    std::cout << "\n ............Imprimiendo datos.................. \n";
+    std::cout << "\n............Imprimiendo datos................. \n";
 
-    for (int i = 0; i < vector_cliente.size(); i++)
+    for (int i = 0; i < vector_clientes.size(); i++)
     {
-        std::cout << "Nombre del cliente: " << vector_cliente[i].nombre_completo << "\n";
-        std::cout << "Precio por hora: $" << vector_cliente[i].datos_alquiler.KPrecioHora << "\n";
-        std::cout << "Detalles de horas de alquiler: \n";
+        std::cout << "Nombre del cliente: " << vector_clientes[i].nombre_completo << "\n";
 
-        for (int j = 0; j < CalcularLongitudArreglo(); j++)
+        std::cout << "Precio por hora: $" << vector_clientes[i].datos_alquiler.kPrecioHora << "\n";
+
+        std::cout << "Detalles de horas de alquiler:\n";
+
+        for (int j = 0; j < vector_clientes[i].datos_alquiler.dias_horas.size(); j++)
         {
-            std::cout << " - Horas alquiler: " << vector_cliente[i].datos_alquiler.horas_alquiler[j] << "\n";
+            std::cout << " - Dia de alquiler: "
+                      << vector_clientes[i].datos_alquiler.dias_horas[j].first << "\n";
+
+            std::cout << " - Horas de alquiler: "
+                      << vector_clientes[i].datos_alquiler.dias_horas[j].second << "\n";
         }
 
-        std::cout << "Costo de alquiler: $" << vector_cliente[i].datos_alquiler.costo_alquiler << "\n";
-        std::cout << "Codigo de alquiler: " << vector_cliente[i].datos_alquiler.cod_alquiler << "\n";
-        DeterminarDescuento(vector_cliente[i].datos_alquiler.cod_alquiler);
+        std::cout << "Costo de alquiler: $"
+                  << vector_clientes[i].datos_alquiler.costo_total << "\n";
+
+        std::cout << "Codigo de alquiler: "
+                  << vector_clientes[i].datos_alquiler.codigo << "\n";
+
+        DeterminarDescuento(vector_clientes[i].datos_alquiler.codigo);
+
         std::cout << "\n";
     }
-}
-
-int CalcularLongitudArreglo()
-{
-
-    int longitud = 0;
-    for (int i = 0; i < 3; i++)
-    {
-        longitud = sizeof(vector_cliente[i].datos_alquiler.horas_alquiler) / sizeof(float);
-    }
-
-    return longitud;
 }

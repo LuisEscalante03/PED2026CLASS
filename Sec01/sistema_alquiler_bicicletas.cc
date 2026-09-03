@@ -88,23 +88,14 @@ float CalcularCostoAlquiler(float cant_horas[], float precio_hora)
 
 int GenerarCodigoAlquiler()
 {
-     return rand() % 9999 + 1000;
-
-    //std::random_device rd;
-    //std::mt19937 gen(rd());
-    //std::uniform_int_distribution<int> dist(1000, 9999);
-    //return dist(gen);
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<int> dist(1000, 9999);
+    return dist(gen);
 }
 
 void DeterminarDescuento(int cod_alquiler)
 {
-    /*  if (cod_alquiler % 2 == 0)
-      {
-          std::cout<<"Descuento del 10%";
-      }else{
-          std::cout<<"No tiene descuento";
-      }
-          */
     // Implementacion del operador ternario
     (cod_alquiler % 2 == 0) ? std::cout << "Descuento del 10% \n" : std::cout << "No tiene descuento \n";
 }

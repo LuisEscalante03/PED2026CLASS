@@ -19,29 +19,25 @@ int main() {
 
     struct Accion accion;
 
-    CalcularFluctuacionAccion(
-
 }
 
 float CalcularMargenGanancia(float precio_compra, float precio_venta){
-    return (precio_venta - precio_compra) / precio_compra * 100;
+    return precio_venta - precio_compra;
 }
 
 void CalcularFluctuacionAccion(Accion &accion){
     //Generar valor aleatorio entre 10.0 y 500.0
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_real_distribution<double> dist_precio(10.0, 500.0);
-    return dist_precio(gen);
+    std::uniform_real_distribution<double> distribucionPrecio(10.0, 500.0);
 
-    accion.precio_compra = dist_precio(gen);
+    accion.precio_compra = distribucionPrecio(gen);
 }
 
 void CalcularFluctuacionAccion(Accion *accion){
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_real_distribution<double> dist_precio(10.0, 500.0);
-    return dist_precio(gen);
+    std::uniform_real_distribution<double> distribucionPrecio(10.0, 500.0);
 
-    accion.precio_compra = dist_precio(gen);
+    accion->precio_compra = distribucionPrecio(gen);
 }
