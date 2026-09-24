@@ -17,6 +17,6 @@ void agregarMensaje(Mensaje *&inicio, std::string usuario, std::string texto);
 void mostrarMensajes(Mensaje *inicio);
 
 // Eliminar toda la lista
-void eliminarMensajes(Mensaje   *&inicio);
+void eliminarMensajes(Mensaje *&inicio);
 
 #endif

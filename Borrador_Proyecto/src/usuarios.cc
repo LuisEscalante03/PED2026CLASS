@@ -106,8 +106,6 @@ void eliminarUsuario(Usuario *tabla[], int codigo) {
 
         anterior_nodo = actual_nodo;
         actual_nodo = actual_nodo->siguiente;
-
-        actual_nodo = actual_nodo->siguiente;
     }
 
     std::cout << "\nUsuario no encontrado.\n";

@@ -26,18 +26,16 @@ int funcionHash(int codigo);
 void registrarUsuario(Usuario *tabla[], int codigo, std::string nombre);
 
 // Buscar usuario
-Usuario *buscarUsuario(Usuario *tabla[],int codigo);
+Usuario *buscarUsuario(Usuario *tabla[], int codigo);
 
 // Mostrar usuarios
 void mostrarUsuarios(Usuario *tabla[]);
 
 // Eliminar usuario
-void eliminarUsuario(Usuario *tabla[],int codigo);
-
+void eliminarUsuario(Usuario *tabla[], int codigo);
 
 // Mostrar tabla hash
 void mostrarTabla(Usuario *tabla[]);
-
 
 // Eliminar memoria
 void eliminarTabla(Usuario *tabla[]);
