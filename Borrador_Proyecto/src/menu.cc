@@ -67,8 +67,6 @@ void iniciarMenu() {
                         agregarMensaje(chatGeneral, nombre, texto);
 
                         std::cout << "\nMensaje enviado.\n";
-
-                        mostrarMensajes(chatGeneral);
                     }
 
 
